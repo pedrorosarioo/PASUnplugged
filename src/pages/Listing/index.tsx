@@ -60,6 +60,7 @@ class Listing extends React.Component {
         key={element.item.name}
         containerStyle={{backgroundColor: '#3fbaaf'}}
         titleStyle={{color: 'white', fontSize: wp(5)}}
+        rightIcon={<Icon name="trophy" size={25} />}
       />
     );
   };
@@ -68,7 +69,7 @@ class Listing extends React.Component {
 
   render() {
     return (
-      <View>
+      <View style={{backgroundColor: '#3fbaaf', flex: 1}}>
         <View
           style={{
             backgroundColor: '#379e94',
