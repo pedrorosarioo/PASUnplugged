@@ -37,7 +37,7 @@ const MainNavigator = createStackNavigator(
     Listing,
   },
   {
-    initialRouteName: 'Listing',
+    initialRouteName: 'Home',
     headerMode: 'none',
     defaultNavigationOptions: {
       gesturesEnabled: false,
