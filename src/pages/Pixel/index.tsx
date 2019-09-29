@@ -1,46 +1,42 @@
 import React from 'react';
 import {View, Text, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {NavigationInjectedProps} from 'react-navigation';
+import AsyncStorage from '@react-native-community/async-storage';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {Circle} from './components';
 
-class Pixel extends React.Component {
+class Pixel extends React.Component<NavigationInjectedProps, {}> {
   state = {
-    pixels: [
-      [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0],
-    ],
-    tips: [
-      [2, 3, 3],
-      [5, 1, 2],
-      [2, 4, 2],
-      [1, 1, 3, 1, 2],
-      [1, 1, 3, 1, 2],
-      [2, 4, 2],
-    ],
+    pixels: [],
+    tips: this.props.navigation.getParam('stage', []).tips,
   };
 
+  public name = this.props.navigation.getParam('stage', '').name;
   public answer = '';
 
   public componentDidMount = () => {
     const answer = [];
+    const tipsLength = this.state.tips.length;
+    const pixels = [];
+    for (let i = 0; i < tipsLength; i++) {
+      const row = [];
+      for (let j = 0; j < 8; j++) {
+        row.push(0);
+      }
+      pixels.push(row);
+    }
     this.state.tips.forEach((row, rowIndex) => {
       const rowAnswer = [];
       row.forEach((value, valueIndex) => {
         if ((valueIndex + 1) % 2 == 1) {
-          console.log('valueIndex é impar', value);
           for (let i = 0; i < value; i++) {
             rowAnswer.push(0);
           }
         } else {
-          console.log('valueIndex é par', value);
           for (let i = 0; i < value; i++) {
             rowAnswer.push(1);
           }
@@ -48,8 +44,9 @@ class Pixel extends React.Component {
       });
       answer.push(rowAnswer);
     });
-    console.log(answer);
+
     this.answer = JSON.stringify(answer);
+    this.setState({pixels});
   };
 
   public switchPixelState = (previousState, rowIndex, pixelIndex) => {
@@ -61,12 +58,28 @@ class Pixel extends React.Component {
 
   public validate = () => {
     const userAnswerJSON = JSON.stringify(this.state.pixels);
-    console.log(userAnswerJSON);
-    console.log(typeof this.answer);
     if (userAnswerJSON == this.answer) {
-      Alert.alert('Parabéns! Você acertou!!!');
+      this.saveProgress();
+      Alert.alert('Parabéns! Você acertou 🎉🎉🎉🎉', null, null, {
+        onDismiss: () => this.props.navigation.goBack(),
+      });
     } else {
-      Alert.alert('Você errou. Tente novamente!');
+      Alert.alert('Você errou 😢 Tente novamente!');
+    }
+  };
+
+  public saveProgress = async () => {
+    const pixelValues = JSON.parse(await AsyncStorage.getItem('pixel'));
+    console.log({pixelValues});
+    if (pixelValues) {
+      if (pixelValues.indexOf(this.name) === -1) {
+        await AsyncStorage.setItem(
+          'pixel',
+          JSON.stringify([...pixelValues, this.name]),
+        );
+      }
+    } else {
+      await AsyncStorage.setItem('pixel', JSON.stringify([this.name]));
     }
   };
 
@@ -109,17 +122,12 @@ class Pixel extends React.Component {
             justifyContent: 'center',
             marginTop: hp(2.5),
           }}>
-          <View style={{width: wp(30)}}>
-            <Icon.Button
-              name="play"
-              backgroundColor="#04D1A7"
-              onPress={this.validate}>
-              <Text
-                style={{fontSize: wp(5), textAlign: 'center', color: 'white'}}>
-                Validar
-              </Text>
-            </Icon.Button>
-          </View>
+          <Icon.Button
+            name="play"
+            backgroundColor="#04D1A7"
+            style={{paddingLeft: 25}}
+            size={hp(5)}
+            onPress={this.validate}></Icon.Button>
         </View>
       </View>
     );

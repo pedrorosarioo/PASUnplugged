@@ -5,64 +5,41 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {NavigationInjectedProps} from 'react-navigation';
-
+import {
+  NavigationInjectedProps,
+  StackActions,
+  NavigationActions,
+} from 'react-navigation';
 import {ListItem} from 'react-native-elements';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const image = require('../../../assets/images/heart.png');
 import pixelData from '../../stages/pixel';
 
-const data = [
-  {
-    name: 'Pixel 1',
-    hasCompleted: false,
-  },
-  {
-    name: 'Pixel 2',
-    hasCompleted: false,
-  },
-  {
-    name: 'Pixel 3',
-    hasCompleted: false,
-  },
-  {
-    name: 'Pixel 4',
-    hasCompleted: false,
-  },
-  {
-    name: 'Pixel 5',
-    hasCompleted: false,
-  },
-  {
-    name: 'Pixel 6',
-    hasCompleted: false,
-  },
-  {
-    name: 'Pixel 7',
-    hasCompleted: false,
-  },
-  {
-    name: 'Pixel 8',
-    hasCompleted: false,
-  },
-  {
-    name: 'Pixel 9',
-    hasCompleted: false,
-  },
-];
-
 class Listing extends React.Component<NavigationInjectedProps, {}> {
-  state = {};
+  state = {
+    data: [],
+  };
 
   public onPress = (element: any) => {
     console.log(element);
-    this.game === 'pixel'
-      ? this.props.navigation.navigate('Pixel', {stage: element.item})
-      : null;
+    if (this.game === 'pixel') {
+      const resetAction = StackActions.reset({
+        index: 1,
+        actions: [
+          NavigationActions.navigate({routeName: 'Home'}),
+          NavigationActions.navigate({
+            routeName: 'Pixel',
+            params: {stage: element.item},
+          }),
+        ],
+      });
+      this.props.navigation.dispatch(resetAction);
+    } else {
+    }
   };
 
   public renderItem = (element: any) => {
-    console.log(element);
     return (
       <ListItem
         onPress={() => this.onPress(element)}
@@ -70,12 +47,36 @@ class Listing extends React.Component<NavigationInjectedProps, {}> {
         key={element.item.name}
         containerStyle={{backgroundColor: '#3fbaaf'}}
         titleStyle={{color: 'white', fontSize: wp(5)}}
-        rightIcon={<Icon name="trophy" size={25} />}
+        rightIcon={
+          <Icon
+            name="trophy"
+            size={25}
+            color={element.item.hasCompleted ? '#fcba03' : '#000'}
+          />
+        }
       />
     );
   };
 
   public game = this.props.navigation.getParam('game', 'pixel');
+  public componentDidMount = () => {
+    this.getStoredValue();
+  };
+  public getStoredValue = async () => {
+    // await AsyncStorage.removeItem('pixel');
+    if (this.game === 'pixel') {
+      const pixelValues = JSON.parse(await AsyncStorage.getItem('pixel'));
+      console.log(pixelValues);
+      if (pixelValues) {
+        pixelData.forEach(stage => {
+          if (pixelValues.indexOf(stage.name) > -1) {
+            stage.hasCompleted = true;
+          }
+        });
+      }
+      this.setState({data: pixelData});
+    }
+  };
 
   public keyExtractor = (_, index) => `${index}`;
 
@@ -103,7 +104,7 @@ class Listing extends React.Component<NavigationInjectedProps, {}> {
         <FlatList
           renderItem={this.renderItem}
           keyExtractor={this.keyExtractor}
-          data={this.game === 'pixel' ? pixelData : []}
+          data={this.state.data}
           ItemSeparatorComponent={() => (
             <View style={{height: 1, backgroundColor: '#727C8F'}} />
           )}
