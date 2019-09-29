@@ -22,7 +22,13 @@ class Home extends React.Component<NavigationInjectedProps<any>> {
           }}
         />
         <Container>
-          <Text style={{marginBottom: 30, fontSize: 16, textAlign: 'center'}}>
+          <Text
+            style={{
+              marginBottom: 30,
+              fontSize: 20,
+              textAlign: 'center',
+              fontFamily: 'NotoSans-Regular',
+            }}>
             Bem vindo ao unplugged! Escolha um jogo e divirta-se!
           </Text>
           <Button onPress={() => this.props.navigation.navigate('Listing')}>
