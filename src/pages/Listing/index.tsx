@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 const image = require('../../../assets/images/heart.png');
 import pixelData from '../../stages/pixel';
+import binaryData from '../../stages/binary';
 
 class Listing extends React.Component<NavigationInjectedProps, {}> {
   state = {
@@ -22,7 +23,6 @@ class Listing extends React.Component<NavigationInjectedProps, {}> {
   };
 
   public onPress = (element: any) => {
-    console.log(element);
     if (this.game === 'pixel') {
       const resetAction = StackActions.reset({
         index: 1,
@@ -36,6 +36,17 @@ class Listing extends React.Component<NavigationInjectedProps, {}> {
       });
       this.props.navigation.dispatch(resetAction);
     } else {
+      const resetAction = StackActions.reset({
+        index: 1,
+        actions: [
+          NavigationActions.navigate({routeName: 'Home'}),
+          NavigationActions.navigate({
+            routeName: 'Binary',
+            params: {stage: element.item},
+          }),
+        ],
+      });
+      this.props.navigation.dispatch(resetAction);
     }
   };
 
@@ -66,7 +77,6 @@ class Listing extends React.Component<NavigationInjectedProps, {}> {
     // await AsyncStorage.removeItem('pixel');
     if (this.game === 'pixel') {
       const pixelValues = JSON.parse(await AsyncStorage.getItem('pixel'));
-      console.log(pixelValues);
       if (pixelValues) {
         pixelData.forEach(stage => {
           if (pixelValues.indexOf(stage.name) > -1) {
@@ -75,6 +85,16 @@ class Listing extends React.Component<NavigationInjectedProps, {}> {
         });
       }
       this.setState({data: pixelData});
+    } else {
+      const binaryValues = JSON.parse(await AsyncStorage.getItem('binaries'));
+      if (binaryValues) {
+        binaryData.forEach(stage => {
+          if (binaryValues.indexOf(stage.name) > -1) {
+            stage.hasCompleted = true;
+          }
+        });
+      }
+      this.setState({data: binaryData });
     }
   };
 

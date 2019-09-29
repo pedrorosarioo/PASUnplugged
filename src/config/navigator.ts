@@ -10,6 +10,7 @@ import {createStackNavigator} from 'react-navigation-stack';
 import Home from '../pages/Home';
 import Pixel from '../pages/Pixel';
 import Listing from '../pages/Listing';
+import Binary from '../pages/Binary';
 
 let navigationService: NavigationContainerComponent | null;
 
@@ -35,6 +36,7 @@ const MainNavigator = createStackNavigator(
     Home,
     Pixel,
     Listing,
+    Binary,
   },
   {
     initialRouteName: 'Home',
