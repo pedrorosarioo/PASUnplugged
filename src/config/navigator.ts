@@ -29,14 +29,6 @@ export function navigate(routeName: string, params?: NavigationParams) {
   }
 }
 
-const stackNavigatorDefaultConfig = {
-  headerMode: 'none',
-  defaultNavigationOptions: {
-    gesturesEnabled: false,
-    swipeEnabled: false,
-  },
-};
-
 const MainNavigator = createStackNavigator(
   {
     Home: {
@@ -45,6 +37,10 @@ const MainNavigator = createStackNavigator(
   },
   {
     initialRouteName: 'Home',
+    headerMode: 'none',
+    defaultNavigationOptions: {
+      gesturesEnabled: false,
+    },
   },
 );
 
