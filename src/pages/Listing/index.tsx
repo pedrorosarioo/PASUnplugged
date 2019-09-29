@@ -1,14 +1,16 @@
 import React from 'react';
-import {View, Text, FlatList, Image} from 'react-native';
+import {View, Text, FlatList, Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {NavigationInjectedProps} from 'react-navigation';
 
 import {ListItem} from 'react-native-elements';
 
 const image = require('../../../assets/images/heart.png');
+import pixelData from '../../stages/pixel';
 
 const data = [
   {
@@ -49,13 +51,21 @@ const data = [
   },
 ];
 
-class Listing extends React.Component {
+class Listing extends React.Component<NavigationInjectedProps, {}> {
   state = {};
+
+  public onPress = (element: any) => {
+    console.log(element);
+    this.game === 'pixel'
+      ? this.props.navigation.navigate('Pixel', {stage: element.item})
+      : null;
+  };
 
   public renderItem = (element: any) => {
     console.log(element);
     return (
       <ListItem
+        onPress={() => this.onPress(element)}
         title={element.item.name}
         key={element.item.name}
         containerStyle={{backgroundColor: '#3fbaaf'}}
@@ -65,7 +75,9 @@ class Listing extends React.Component {
     );
   };
 
-  public keyExtractor = (item, index) => `${index}`;
+  public game = this.props.navigation.getParam('game', 'pixel');
+
+  public keyExtractor = (_, index) => `${index}`;
 
   render() {
     return (
@@ -83,14 +95,15 @@ class Listing extends React.Component {
             style={{width: 70, height: 70, marginLeft: wp(20)}}
           />
           <Text style={{fontSize: wp(5), color: '#FFF', marginLeft: hp(3)}}>
-            DESAFIO PIXEL
+            DESAFIO
+            {` ${this.game.toUpperCase()}`}
           </Text>
         </View>
         <View style={{height: 2, backgroundColor: '#727C8F'}} />
         <FlatList
           renderItem={this.renderItem}
           keyExtractor={this.keyExtractor}
-          data={data}
+          data={this.game === 'pixel' ? pixelData : []}
           ItemSeparatorComponent={() => (
             <View style={{height: 1, backgroundColor: '#727C8F'}} />
           )}
