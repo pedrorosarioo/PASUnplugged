@@ -1,5 +1,4 @@
 import {
-  createSwitchNavigator,
   createAppContainer,
   NavigationActions,
   NavigationContainerComponent,
@@ -9,6 +8,8 @@ import {
 import {createStackNavigator} from 'react-navigation-stack';
 
 import Home from '../pages/Home';
+import Pixel from '../pages/Pixel';
+import Listing from '../pages/Listing';
 
 let navigationService: NavigationContainerComponent | null;
 
@@ -29,25 +30,20 @@ export function navigate(routeName: string, params?: NavigationParams) {
   }
 }
 
-const stackNavigatorDefaultConfig = {
-  headerMode: 'none',
-  defaultNavigationOptions: {
-    gesturesEnabled: false,
-    swipeEnabled: false,
-  },
-};
-
 const MainNavigator = createStackNavigator(
   {
-    Home: {
-      screen: Home,
-    },
+    Home,
+    Pixel,
+    Listing,
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'Listing',
+    headerMode: 'none',
+    defaultNavigationOptions: {
+      gesturesEnabled: false,
+    },
   },
 );
 
-// export default MainNavigator;
 const AppContainer = createAppContainer(MainNavigator);
 export default AppContainer;
