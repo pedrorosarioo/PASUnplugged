@@ -1,13 +1,17 @@
 import React from 'react';
-import {View} from 'react-native';
+import {View, Text} from 'react-native';
 import {Header} from 'react-native-elements';
-import {Container, Button, ButtonText} from './styled';
+import Icon from 'react-native-vector-icons/dist/Feather';
 
-class Home extends React.Component {
+import {Container, Button, ButtonText} from './styled';
+import {NavigationInjectedProps} from 'react-navigation';
+
+class Home extends React.Component<NavigationInjectedProps<any>> {
   render() {
     return (
-      <View>
+      <>
         <Header
+          backgroundColor={'#379e94'}
           centerComponent={{
             text: 'Unplugged',
             style: {
@@ -18,15 +22,17 @@ class Home extends React.Component {
           }}
         />
         <Container>
-          <Button>
+          <Text>Bem vindo ao unplugged! Escolha um jogo e divirta-se!</Text>
+          <Button onPress={() => this.props.navigation.navigate('Listing')}>
+            <Icon name="star" size={40} color="white" />
             <ButtonText>Pixel</ButtonText>
           </Button>
           <Button>
-            <ButtonText style={{fontSize: 24}}>0 1</ButtonText>
+            <ButtonText style={{fontSize: 32}}>0 1</ButtonText>
             <ButtonText>Números binários</ButtonText>
           </Button>
         </Container>
-      </View>
+      </>
     );
   }
 }

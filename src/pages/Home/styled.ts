@@ -4,6 +4,7 @@ export const Container = styled.View`
   padding: 16px;
   justify-content: center;
   align-items: center;
+  flex: 1;
 `;
 
 export const Button = styled.TouchableOpacity`
@@ -23,4 +24,5 @@ export const ButtonText = styled.Text`
   color: white;
   font-size: 18px;
   text-align: center;
+  margin-top: 16px;
 `;
