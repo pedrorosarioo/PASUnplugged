@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import {Header} from 'react-native-elements';
-import {Container} from './styled';
+import {Container, Button, ButtonText} from './styled';
 
 class Home extends React.Component {
   render() {
@@ -18,7 +18,13 @@ class Home extends React.Component {
           }}
         />
         <Container>
-          <Text>Vamo time, testando</Text>
+          <Button>
+            <ButtonText>Pixel</ButtonText>
+          </Button>
+          <Button>
+            <ButtonText style={{fontSize: 24}}>0 1</ButtonText>
+            <ButtonText>Números binários</ButtonText>
+          </Button>
         </Container>
       </View>
     );
