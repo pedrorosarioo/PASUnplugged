@@ -2,8 +2,10 @@ import React, {useState} from 'react';
 import {ButtonGroup, Header} from 'react-native-elements';
 import {Container, InnerContainer} from './styled';
 import {Text} from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
+import {NavigationInjectedProps} from 'react-navigation';
 
-export default function Help() {
+export default function Help(props: NavigationInjectedProps) {
   const [selected, setSelected] = useState(0);
 
   return (
@@ -18,6 +20,14 @@ export default function Help() {
             fontSize: 24,
           },
         }}
+        leftComponent={
+          <Icon
+            name="chevron-left"
+            onPress={() => props.navigation.goBack()}
+            color="white"
+            size={24}
+          />
+        }
       />
       <Container>
         <ButtonGroup
@@ -65,7 +75,15 @@ export default function Help() {
                 style={{fontSize: 18, fontWeight: 'bold', marginBottom: 20}}>
                 Números Binários
               </Text>
-              <Text style={{fontSize: 16}}>teste numeros binários</Text>
+              <Text style={{fontSize: 16}}>
+                Neste jogo, o jogador verá uma grade com bolas marcadas e
+                desmarcadas, e ao lado de cada linha, um botão que permitirá-lo
+                ver o valor de cada uma das bolas, sendo que esse valor, só é
+                contabilizado nas bolas marcadas. Ao somar o valor das bolas em
+                cada linha, o jogador poderá consultar uma tabela abaixo e ver
+                qual valor corresponde a qual letra. Por fim, encontrando todas
+                as letras, ele terá a palavra formada e vencerá o jogo.
+              </Text>
             </>
           )}
         </InnerContainer>
