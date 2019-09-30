@@ -11,6 +11,7 @@ import Home from '../pages/Home';
 import Pixel from '../pages/Pixel';
 import Listing from '../pages/Listing';
 import Binary from '../pages/Binary';
+import Help from '../pages/Help';
 
 let navigationService: NavigationContainerComponent | null;
 
@@ -37,6 +38,7 @@ const MainNavigator = createStackNavigator(
     Pixel,
     Listing,
     Binary,
+    Help,
   },
   {
     initialRouteName: 'Home',
