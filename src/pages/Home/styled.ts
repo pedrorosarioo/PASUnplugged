@@ -19,6 +19,14 @@ export const Button = styled.TouchableOpacity`
   elevation: 15;
 `;
 
+export const HelpButton = styled.TouchableOpacity`
+  width: 150px;
+  height: 40px;
+  background-color: transparent;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const ButtonText = styled.Text`
   font-family: 'NotoSans-Regular';
   color: white;
