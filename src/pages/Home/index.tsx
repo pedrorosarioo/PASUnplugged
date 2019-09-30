@@ -40,7 +40,7 @@ class Home extends React.Component<NavigationInjectedProps<any>> {
           </Button>
           <Button
             onPress={() =>
-              this.props.navigation.navigate('Listing', {game: 'binary'})
+              this.props.navigation.navigate('Listing', {game: 'binário'})
             }>
             <ButtonText style={{fontSize: 32}}>0 1</ButtonText>
             <ButtonText>Números binários</ButtonText>
