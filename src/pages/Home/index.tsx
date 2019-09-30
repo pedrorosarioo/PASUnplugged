@@ -31,11 +31,17 @@ class Home extends React.Component<NavigationInjectedProps<any>> {
             }}>
             Bem vindo ao unplugged! Escolha um jogo e divirta-se!
           </Text>
-          <Button onPress={() => this.props.navigation.navigate('Listing', { game: 'pixel' })}>
+          <Button
+            onPress={() =>
+              this.props.navigation.navigate('Listing', {game: 'pixel'})
+            }>
             <Icon name="star" size={40} color="white" />
             <ButtonText>Pixel</ButtonText>
           </Button>
-          <Button onPress={() => this.props.navigation.navigate('Listing', { game: 'binary' })}>
+          <Button
+            onPress={() =>
+              this.props.navigation.navigate('Listing', {game: 'binário'})
+            }>
             <ButtonText style={{fontSize: 32}}>0 1</ButtonText>
             <ButtonText>Números binários</ButtonText>
           </Button>
